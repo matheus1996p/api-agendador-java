@@ -25,8 +25,8 @@ public class RegistrarHorarioController {
     }
 
     @GetMapping("/minhaAgenda")
-    public ResponseEntity listarData(){
-        return new ResponseEntity<>(registrarHorarioRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity listarData(@RequestParam Date data, @RequestParam String cpf){
+        return new ResponseEntity<>(registrarHorarioRepository.findByCpfAndAndData(cpf, data), HttpStatus.OK);
     }
 
     @PostMapping(
@@ -34,21 +34,27 @@ public class RegistrarHorarioController {
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity inserirHorario(RegistrarHorario criteria) {
         try {
-            if(criteria.getId() == 0) {
-                Integer id = getLastIdCanhotos().getBody();
-                criteria.setId((id == null ? 1 : id+1));
-                return new ResponseEntity<>(registrarHorarioRepository.save(criteria), HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(registrarHorarioRepository.save(criteria), HttpStatus.CREATED);
-            }
+            return new ResponseEntity<>(registrarHorarioRepository.save(criteria), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    @PostMapping("/atualiza/{status}/{id}")
+    public ResponseEntity AtualizarStatus(@PathVariable Integer status, @PathVariable Integer id) {
+        registrarHorarioRepository.atualizaHorario(status, id);
+        return new ResponseEntity<Integer>(HttpStatus.OK);
+    }
+
     @GetMapping("/get_id")
-    public ResponseEntity<Integer> getLastIdCanhotos() {
+    public ResponseEntity<Integer> getLastIdHorarios() {
         return new ResponseEntity<Integer>(registrarHorarioRepository.getLastId(), HttpStatus.OK);
     }
+
+    @GetMapping("/delete/{id}")
+    void deleteEmployee(@PathVariable Integer id) {
+        registrarHorarioRepository.deleteById(id);
+    }
+
 }

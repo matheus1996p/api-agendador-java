@@ -23,7 +23,7 @@ public class ConfAgendamentoController {
     @PostMapping(
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity updateCanhotos(ConfAgendamento criteria) {
+    public ResponseEntity updateHorario(ConfAgendamento criteria) {
         try {
             if(criteria.getId() == 0) {
                 Integer id = getLastIdCanhotos().getBody();

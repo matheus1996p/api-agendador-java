@@ -2,9 +2,12 @@ package com.viasoft.apijava.repository;
 
 import com.viasoft.apijava.model.RegistrarHorario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 
@@ -15,4 +18,11 @@ public interface RegistrarHorarioRepository extends JpaRepository<RegistrarHorar
     Integer getLastId();
 
     List<RegistrarHorario> findAllByData(Date data);
+
+    List<RegistrarHorario> findByCpfAndAndData(String cpf, Date data);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE REGISTRAR_HORARIO SET STATUS = :status WHERE ID = :id", nativeQuery = true)
+    void atualizaHorario(@Param("status") Integer status, @Param("id") Integer id);
 }

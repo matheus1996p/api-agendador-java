@@ -32,7 +32,7 @@ public class RegistrarHorario {
     private Integer status;
 
     @Column(name = "DATA")
-    private Timestamp data;
+    private Date data;
 
     @Column(name = "QUANTIDADE")
     private Integer quantidade;
@@ -46,6 +46,14 @@ public class RegistrarHorario {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
 
