@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/marcarHorario")
@@ -21,14 +20,19 @@ public class RegistrarHorarioController {
     private RegistrarHorarioRepository registrarHorarioRepository;
 
     @GetMapping
-    public ResponseEntity listarTodos(){
+    public ResponseEntity listarTodos(@RequestParam Date data){
+        return new ResponseEntity<>(registrarHorarioRepository.findAllByData(data), HttpStatus.OK);
+    }
+
+    @GetMapping("/minhaAgenda")
+    public ResponseEntity listarData(){
         return new ResponseEntity<>(registrarHorarioRepository.findAll(), HttpStatus.OK);
     }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
             produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity updateCanhotos(RegistrarHorario criteria) {
+    public ResponseEntity inserirHorario(RegistrarHorario criteria) {
         try {
             if(criteria.getId() == 0) {
                 Integer id = getLastIdCanhotos().getBody();

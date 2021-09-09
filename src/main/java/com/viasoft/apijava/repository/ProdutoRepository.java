@@ -1,5 +1,6 @@
 package com.viasoft.apijava.repository;
 
+import com.viasoft.apijava.model.Produto;
 import com.viasoft.apijava.model.RegistrarHorario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,10 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface RegistrarHorarioRepository extends JpaRepository<RegistrarHorario, Integer>  {
+public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
-    @Query(value = "SELECT MAX(ID) FROM REGISTRAR_HORARIO", nativeQuery = true)
-    Integer getLastId();
+    @Query(value = "SELECT ITEMAGRO.DESCRICAO, ITEMAGRO.ITEM FROM ITEMAGRO", nativeQuery = true)
+    List<Produto> getProdutos();
 
-    List<RegistrarHorario> findAllByData(Date data);
 }
