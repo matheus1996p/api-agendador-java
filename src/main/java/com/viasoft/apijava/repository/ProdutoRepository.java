@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Integer> {
 
-    @Query(value = "SELECT ITEMAGRO.DESCRICAO, ITEMAGRO.ITEM FROM ITEMAGRO", nativeQuery = true)
+    @Query(value = "SELECT ITEMAGRO.DESCRICAO, ITEMAGRO.ITEM NUMERO FROM ITEMAGRO", nativeQuery = true)
     List<Produto> getProdutos();
 
 }
