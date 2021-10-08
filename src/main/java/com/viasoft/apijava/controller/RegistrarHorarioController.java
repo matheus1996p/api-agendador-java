@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/marcarHorario")
@@ -29,12 +30,11 @@ public class RegistrarHorarioController {
         return new ResponseEntity<>(registrarHorarioRepository.findByCpfAndAndData(cpf, data), HttpStatus.OK);
     }
 
-    @PostMapping(
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
-            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity inserirHorario(RegistrarHorario criteria) {
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_ATOM_XML_VALUE})
+    public ResponseEntity inserirHorario(@RequestBody List<RegistrarHorario> criteria) {
         try {
-            return new ResponseEntity<>(registrarHorarioRepository.save(criteria), HttpStatus.CREATED);
+            return new ResponseEntity<>(registrarHorarioRepository.saveAll(criteria), HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

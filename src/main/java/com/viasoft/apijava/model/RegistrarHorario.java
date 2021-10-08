@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "REGISTRAR_HORARIO", schema = "VIASOFT")
@@ -16,11 +17,14 @@ public class RegistrarHorario {
     @Column(name = "ID")
     private Integer id;
 
-    @Column(name = "PEDIDO")
-    private Integer pedido;
+    @Column(name = "CODITEM")
+    private Integer coditem;
 
     @Column(name = "CPF")
     private String cpf;
+
+    @Column(name = "DOCUMENTO")
+    private String documento;
 
     @Column(name = "PLACA")
     private String placa;
@@ -58,3 +62,4 @@ public class RegistrarHorario {
 
 
 }
+
