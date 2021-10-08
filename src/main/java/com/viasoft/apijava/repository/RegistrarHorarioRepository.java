@@ -23,6 +23,10 @@ public interface RegistrarHorarioRepository extends JpaRepository<RegistrarHorar
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE REGISTRAR_HORARIO SET STATUS = :status WHERE ID = :id", nativeQuery = true)
-    void atualizaHorario(@Param("status") Integer status, @Param("id") Integer id);
+    void deleteByHorarioAndData(String horario, Date data);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE REGISTRAR_HORARIO SET STATUS = :status WHERE HORARIO = :horario and DATA = :data", nativeQuery = true)
+    void atualizaHorario(@Param("status") Integer status, @Param("horario") String horario, @Param("data") Date data);
 }

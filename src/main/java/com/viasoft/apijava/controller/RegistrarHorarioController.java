@@ -41,9 +41,9 @@ public class RegistrarHorarioController {
         }
     }
 
-    @PostMapping("/atualiza/{status}/{id}")
-    public ResponseEntity AtualizarStatus(@PathVariable Integer status, @PathVariable Integer id) {
-        registrarHorarioRepository.atualizaHorario(status, id);
+    @PostMapping("/atualiza/{status}/{horario}/{data}")
+    public ResponseEntity AtualizarStatus(@PathVariable Integer status, @PathVariable String horario, @PathVariable Date data) {
+        registrarHorarioRepository.atualizaHorario(status, horario, data);
         return new ResponseEntity<Integer>(HttpStatus.OK);
     }
 
@@ -52,9 +52,9 @@ public class RegistrarHorarioController {
         return new ResponseEntity<Integer>(registrarHorarioRepository.getLastId(), HttpStatus.OK);
     }
 
-    @GetMapping("/delete/{id}")
-    void deleteEmployee(@PathVariable Integer id) {
-        registrarHorarioRepository.deleteById(id);
+    @GetMapping("/delete/{horario}/{data}")
+    void deleteHorario(@PathVariable String horario, @PathVariable Date data) {
+        registrarHorarioRepository.deleteByHorarioAndData(horario, data);
     }
 
 }
