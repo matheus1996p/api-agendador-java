@@ -5,10 +5,8 @@ SELECT ITEM CODITEM,
        CAST(SUM(SALDO) AS INTEGER) QUANTIDADE
 FROM(
         SELECT DISTINCT NFITEM.ITEM,
-                        NFITEM.ESTAB,
                         'NF-' || NFCAB.NOTA NOTA,
                         ITEMAGRO.DESCRICAO ITEMDESC,
-                        ITEMAGRO.UNIDADE ,
                         SUM(NFITEM.QUANTIDADE) - COALESCE((SELECT SUM(NFITEMAPARTIRDE.QUANTIDADE)
                                                            FROM NFITEM NFITEM_QTD
                                                                     INNER JOIN NFITEMAPARTIRDE
@@ -36,10 +34,20 @@ FROM(
                            ON (NFCFG.NOTACONF = NFCAB.NOTACONF)
         WHERE (0=0)
           AND CONTAMOV.CNPJF = :CPF
-        GROUP BY NFCAB.NOTA, NFITEM.ITEM, NFITEM.SEQNOTA, NFITEM.SEQNOTAITEM, NFITEM.ESTAB, ITEMAGRO.DESCRICAO, ITEMAGRO.UNIDADE)
-WHERE SALDO > 0
+        GROUP BY NFCAB.NOTA, NFITEM.ITEM, NFITEM.SEQNOTA, NFITEM.SEQNOTAITEM, ITEMAGRO.DESCRICAO , NFITEM.ESTAB
+
+        UNION ALL
+
+        SELECT REGISTRAR_HORARIO.coditem,
+               REGISTRAR_HORARIO.documento,
+               REGISTRAR_HORARIO.descricao,
+               REGISTRAR_HORARIO.quantidade * - 1  SALDO
+        FROM registrar_horario
+        WHERE replace(replace(REGISTRAR_HORARIO.cpf,'.',''),'-','') = :CPF
+
+
+    )
 GROUP BY ITEM,
-         ESTAB,
          NOTA,
-         ITEMDESC,
-         UNIDADE
+         ITEMDESC
+HAVING SUM(SALDO) > 0
